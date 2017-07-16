@@ -1,17 +1,33 @@
 // 1. 导入React以及相关的库
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 // 2. 创建Header component
 const Header = () => {
-  const { textStyle } = styles;
+  const { textStyle, viewStyle } = styles;
 
-  return <Text style={textStyle}>专辑</Text>
+  return (
+    <View style={viewStyle}>
+      <Text style={textStyle}>专辑</Text>
+    </View>
+  )
 }
 
 const styles = {
   textStyle: {
     fontSize: 20
+  },
+  viewStyle: {
+    backgroundColor: '#E0E0E0',
+    height: 60,
+    paddingTop: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    elevation: 2,
+    position: 'relative'
   }
 }
 
