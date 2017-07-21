@@ -4,15 +4,29 @@ import Card from './Card';
 import CardSection from './CardSection';
 import { Image } from 'react-native';
 
-const AlbumDetail = (props) => {
+const AlbumDetail = ({album}) => {
+  const { image, thumbnail, title, description } = album;
+  const { 
+    imageContainerStyle,
+    imageStyle,
+    thumbnailStyle,
+    infoStyle,
+    titleStyle,
+    descriptionStyle
+  } = styles;
+  
   return (
     <Card>
-      <CardSection style={styles.imageContainerStyle}>
-        <Image source={{uri: props.album.image}} style={styles.imageStyle}></Image>
+      <CardSection style={imageContainerStyle}>
+        <Image source={{uri: image}} style={imageStyle}></Image>
       </CardSection>
 
       <CardSection>
-        <Text>{props.album.title}</Text>
+        <Image source={{uri: thumbnail}} style={thumbnailStyle}></Image>
+        <View style={infoStyle}>
+          <Text style={titleStyle}>{title}</Text>
+          <Text style={descriptionStyle}>{description}</Text>
+        </View>
       </CardSection>
     </Card>
   );
@@ -28,6 +42,24 @@ const styles = {
     borderTopLeftRadius: 3,
     borderTopRightRadius: 3,
     overflow: 'hidden'
+  },
+  thumbnailStyle: {
+    width: 48,
+    height: 48,
+    borderRadius: 2,
+    marginRight: 8
+  },
+  infoStyle: {
+    flex: 1,
+    marginBottom: 6
+  },
+  titleStyle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 6
+  },
+  descriptionStyle: {
+    fontSize: 13
   }
 }
 
