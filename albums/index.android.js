@@ -5,16 +5,13 @@ import Header from './src/components/Header';
 import AlbumList from './src/components/AlbumList';
 
 // 2. 创建我们的Component
-class App extends Component {
-
-  render() {
-    return (
-      <View>
-        <Header headerText="专辑" />
-        <AlbumList />
-      </View>
-    )
-  }
+const App = () => {
+  return (
+    <View style={{flex: 1}}>
+      <Header headerText="专辑" />
+      <AlbumList />
+    </View>
+  )
 }
 
 // 3. 渲染Component
