@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { Header } from '../commons';
 import { SignInForm, SignUpForm, SignOutForm } from './forms';
 
+var wilddog = require('wilddog');
+
 const Mode = {
   SIGN_IN: Symbol('SIGN_IN'),
   SIGN_UP: Symbol('SIGN_UP'),
@@ -11,6 +13,12 @@ const Mode = {
 
 class App extends Component {
   state = { mode: Mode.SIGN_IN }
+
+  componentWillMount() {
+    wilddog.initializeApp({
+      authDomain: "wd6443597909ohnbgf.wilddog.com"
+    });
+  }
 
   toggleSignInAndSignUp() {
     const { mode } = this.state;
