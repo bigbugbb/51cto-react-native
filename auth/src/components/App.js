@@ -21,8 +21,7 @@ class App extends Component {
   }
 
   toggleSignInAndSignUp() {
-    const { mode } = this.state;
-    if (mode === Mode.SIGN_IN) {
+    if (this.state.mode === Mode.SIGN_IN) {
       this.setState({ mode: Mode.SIGN_UP });
     } else {
       this.setState({ mode: Mode.SIGN_IN });

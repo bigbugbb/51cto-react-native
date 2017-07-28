@@ -20,7 +20,8 @@ const styles = {
     padding: 8
   },
   textStyle: {
-    fontSize: 14,
+    fontSize: 16,
+    alignSelf: 'center', 
     color: '#007AFF',
     marginLeft: 16,
     marginRight: 16
