@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { Card, CardSection, Input, Button } from '../../commons';
+import { styles } from './styles';
 
 class SignInForm extends Component {
   state = { email: '', password: '' }
@@ -35,12 +36,6 @@ class SignInForm extends Component {
         </CardSection>
       </Card>
     )
-  }
-}
-
-const styles = {
-  viewStyle: {
-    flex: 1
   }
 }
 
