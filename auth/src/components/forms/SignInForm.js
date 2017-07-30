@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { Card, CardSection, Input, Button } from '../../commons';
 import { styles } from './styles';
 
 var wilddog = require('wilddog');
 
 class SignInForm extends Component {
-  state = { email: '', password: '', error: '' }
+  state = { authorizing: false, email: '', password: '', error: '' }
 
   onSignIn() {
     const { email, password } = this.state;
+
+    this.setState({ authorizing: true });
     wilddog.auth().signInWithEmailAndPassword(email, password)
       .then(() => {
         console.info("user login successfully, current user => ", wilddog.auth().currentUser);
       })
       .catch((error) => {
-        this.setState({ error: error.message });
+        this.setState({ error: error.message, authorizing: false });
       });
   }
 
@@ -29,9 +31,20 @@ class SignInForm extends Component {
       )
     }
   }
+  
+  renderButton() {
+    if (this.state.authorizing) {
+      return (
+        <ActivityIndicator size='small'/>
+      )
+    } else {
+      return (
+        <Button onPress={this.onSignIn.bind(this)}>登陆</Button>
+      )
+    }
+  }
 
   render() {
-    const { viewStyle } = styles;
     const { email, password, error } = this.state;
     return (
       <Card>
@@ -57,8 +70,8 @@ class SignInForm extends Component {
         {this.renderError()}
 
         <CardSection>
-          <View style={viewStyle}>
-            <Button onPress={this.onSignIn.bind(this)}>登陆</Button> 
+          <View style={styles.viewStyle}>
+            {this.renderButton()}
           </View>       
         </CardSection>
       </Card>

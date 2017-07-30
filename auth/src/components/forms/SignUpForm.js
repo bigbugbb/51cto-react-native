@@ -1,24 +1,25 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { Card, CardSection, Input, Button } from '../../commons';
 import { styles } from './styles';
 
 var wilddog = require('wilddog');
 
 class SignUpForm extends Component {
-  state = { email: '', password: '', passwordRepeat: '', error: '' }
+  state = { authorizing: false, email: '', password: '', passwordRepeat: '', error: '' }
 
   onSignUp() {
     const { email, password, passwordRepeat } = this.state;
     if (password !== passwordRepeat) {
       this.setState({ error: "password and passwordRepeat are different" });
     } else {
+      this.setState({ authorizing: true });
       wilddog.auth().createUserWithEmailAndPassword(email, password)
         .then((user) => {
           console.info("user created", user);
         })
         .catch((error) => {
-          this.setState({ error: error.message });
+          this.setState({ error: error.message, authorizing: false });
         })
     }
   }
@@ -34,14 +35,26 @@ class SignUpForm extends Component {
     }
   }
 
+  renderButton() {
+    if (this.state.authorizing) {
+      return (
+        <ActivityIndicator size='small'/>
+      )
+    } else {
+      return (
+        <Button onPress={this.onSignUp.bind(this)}>注册</Button>
+      )
+    }
+  }
+
   render() {
-    const { viewStyle } = styles;
+    const { email, password, passwordRepeat } = this.state;
     return (
       <Card>
         <CardSection>
           <Input 
             label="邮箱"
-            value={this.state.email}
+            value={email}
             onChangeText={(email) => this.setState({ email })}
             placeholder="user@icloud.com"
           />
@@ -50,7 +63,7 @@ class SignUpForm extends Component {
         <CardSection>
           <Input 
             label="密码"
-            value={this.state.password}
+            value={password}
             onChangeText={(password) => this.setState({ password })}
             placeholder="请输入密码"
             secureTextEntry={true}
@@ -60,7 +73,7 @@ class SignUpForm extends Component {
         <CardSection>
           <Input 
             label="重复密码"
-            value={this.state.passwordRepeat}
+            value={passwordRepeat}
             onChangeText={(passwordRepeat) => this.setState({ passwordRepeat })}
             placeholder="请再次输入密码"
             secureTextEntry={true}
@@ -70,8 +83,8 @@ class SignUpForm extends Component {
         {this.renderError()}
 
         <CardSection>
-          <View style={viewStyle}>
-            <Button onPress={this.onSignUp.bind(this)}>注册</Button>
+          <View style={styles.viewStyle}>
+            {this.renderButton()}
           </View>
         </CardSection>
       </Card>
