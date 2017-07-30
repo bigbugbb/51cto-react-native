@@ -3,8 +3,36 @@ import { View, Text } from 'react-native';
 import { Card, CardSection, Input, Button } from '../../commons';
 import { styles } from './styles';
 
+var wilddog = require('wilddog');
+
 class SignUpForm extends Component {
-  state = { email: '', password: '', passwordRepeat: '' }
+  state = { email: '', password: '', passwordRepeat: '', error: '' }
+
+  onSignUp() {
+    const { email, password, passwordRepeat } = this.state;
+    if (password !== passwordRepeat) {
+      this.setState({ error: "password and passwordRepeat are different" });
+    } else {
+      wilddog.auth().createUserWithEmailAndPassword(email, password)
+        .then((user) => {
+          console.info("user created", user);
+        })
+        .catch((error) => {
+          this.setState({ error: error.message });
+        })
+    }
+  }
+
+  renderError() {
+    const { error } = this.state;
+    if (error) {
+      return (
+        <CardSection>
+          <Text style={styles.errorStyle}>{error}</Text>
+        </CardSection>
+      )
+    }
+  }
 
   render() {
     const { viewStyle } = styles;
@@ -39,9 +67,11 @@ class SignUpForm extends Component {
           />
         </CardSection>
 
+        {this.renderError()}
+
         <CardSection>
           <View style={viewStyle}>
-            <Button>注册</Button>
+            <Button onPress={this.onSignUp.bind(this)}>注册</Button>
           </View>
         </CardSection>
       </Card>

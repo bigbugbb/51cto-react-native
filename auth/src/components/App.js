@@ -12,11 +12,18 @@ const Mode = {
 }
 
 class App extends Component {
-  state = { mode: Mode.SIGN_IN }
+  state = { mode: Mode.SIGN_IN, prevMode: Mode.SIGN_IN }
 
   componentWillMount() {
     wilddog.initializeApp({
       authDomain: "wd6443597909ohnbgf.wilddog.com"
+    });
+    wilddog.auth().onAuthStateChanged((user) => {  
+      if (user) {
+        this.setState({ mode: Mode.SIGN_OUT, prevMode: this.state.mode });
+      } else {
+        this.setState({ mode: this.state.prevMode });
+      }
     });
   }
 

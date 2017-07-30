@@ -3,12 +3,14 @@ import { View, Text } from 'react-native';
 import { Card, CardSection, Button } from '../../commons';
 import { styles } from './styles';
 
+var wilddog = require('wilddog');
+
 const SignOutForm = () => {
   return (
     <Card>
       <CardSection>
         <View style={styles.viewStyle}>
-          <Button>注销</Button>
+          <Button onPress={() => wilddog.auth().signOut()}>注销</Button>
         </View>
       </CardSection>
     </Card>
