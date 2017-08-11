@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { Header } from './components/common';
+import TechList from './components/TechList';
 import reducers from './reducers';
 
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
     <Provider store={createStore(reducers)}>
       <View>
         <Header headerText="技术栈" />
+        <TechList />
       </View>
     </Provider>
   )
