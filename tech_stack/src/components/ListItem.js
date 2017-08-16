@@ -4,10 +4,22 @@ import { CardSection } from './common';
 import * as actions from '../actions';
 import { connect } from 'react-redux';
 
-class ListItem extends Component {  
+class ListItem extends Component {
+  renderDescription(description) {
+    if (this.props.selected) {
+      return (
+        <CardSection>
+          <Text>
+            {description}
+          </Text>
+        </CardSection>
+      );
+    }
+  }
+
   render() {
     const { titleStyle } = styles;
-    const { id, title } = this.props.tech;
+    const { id, title, description } = this.props.tech;
 
     console.log(this.props);
 
@@ -21,6 +33,7 @@ class ListItem extends Component {
               {title}
             </Text>
           </CardSection>
+          {this.renderDescription(description)}
         </View>
       </TouchableWithoutFeedback>
     );
@@ -33,8 +46,8 @@ const styles = {
   }
 }
 
-const mapStateToProps = (state) => {
-  return { selectTechId: state.selectTechId };
+const mapStateToProps = (state, ownProps) => {
+  return { selected: ownProps.tech.id === state.selectTechId };
 }
 
 export default connect(mapStateToProps, actions)(ListItem);
