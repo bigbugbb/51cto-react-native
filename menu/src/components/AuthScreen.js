@@ -5,6 +5,10 @@ import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
 
 class AuthScreen extends Component {
+  static navigationOptions = {
+    title: '用户认证'
+  };
+
   onEmailChanged(text) {
     this.props.emailChanged(text);
   }
@@ -14,8 +18,8 @@ class AuthScreen extends Component {
   }
 
   onButtonPress() {
-    const { email, password } = this.props.auth;
-    this.props.loginUser(email, password);
+    const { auth, navigation } = this.props;
+    this.props.loginUser(auth.email, auth.password, navigation);
   }
 
   renderErrorMessage(error) {
@@ -80,7 +84,6 @@ const styles = {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return { auth: state.auth };
 }
 

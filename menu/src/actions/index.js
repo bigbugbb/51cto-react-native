@@ -22,21 +22,30 @@ export const passwordChanged = (text) => {
   }
 }
 
-export const loginUser = (email, password) => {
+export const loginUser = (email, password, navigation) => {
   return (dispatch) => {
     dispatch({ type: LOGIN_USER_START });
     wilddog.auth().signInWithEmailAndPassword(email, password)
       .then(() => {
-        dispatch({ type: LOGIN_USER_SUCCESS, payload: wilddog.auth().currentUser });
+        loginUserSuccess(dispatch, wilddog.auth().currentUser, navigation);
       })
       .catch(() => {
         wilddog.auth().createUserWithEmailAndPassword(email, password)
           .then((user) => {
-            dispatch({ type: LOGIN_USER_SUCCESS, payload: user });
+            loginUserSuccess(dispatch, user, navigation);
           })
           .catch((error) => {
-            dispatch({ type: LOGIN_USER_FAIL, payload: '用户登录错误' });
+            loginUserFail('用户登录错误');
           })
-      });      
+      });
   }
+}
+
+const loginUserSuccess = (dispatch, user, navigation) => {
+  dispatch({ type: LOGIN_USER_SUCCESS, payload: user });
+  navigation.navigate('MenuList');
+}
+
+const loginUserFail = (dispatch, error) => {
+  dispatch({ type: LOGIN_USER_FAIL, payload: error });
 }

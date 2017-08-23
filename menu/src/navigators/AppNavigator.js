@@ -9,7 +9,10 @@ export const AppNavigator = StackNavigator({
 });
 
 const AppWithNavigationState = ({ dispatch, nav }) => (
-  <AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
+  <AppNavigator
+    navigation={addNavigationHelpers({ dispatch, state: nav })}
+    screenProps={{tintColor: '#007AFF'}}
+  />
 )
 
 const mapStateToProps = (state) => ({
