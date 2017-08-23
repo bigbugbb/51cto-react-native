@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import { AuthScreen } from './components';
+import AppNavigationWithState from './navigators/AppNavigator'
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
@@ -18,7 +18,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={createStore(reducers, {}, applyMiddleware(thunk))}>
-        <AuthScreen />
+        <AppNavigationWithState />
       </Provider>
     );
   }
