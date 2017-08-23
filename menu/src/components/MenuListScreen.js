@@ -1,7 +1,18 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 class MenuListScreen extends Component {
+  static navigationOptions = ({navigation, screenProps}) => ({
+    title: '菜单',
+    headerRight: (
+      <TouchableOpacity style={styles.headerButtonStyle}>
+        <Text style={[styles.headerTextStyle, {color: screenProps.tintColor}]}>
+          +
+        </Text>
+      </TouchableOpacity>
+    )
+  });
+
   render() {
     return (
       <View>
@@ -10,6 +21,16 @@ class MenuListScreen extends Component {
         </Text>
       </View>
     )
+  }
+}
+
+const styles = {
+  headerButtonStyle: {
+    marginRight: 16
+  },
+  headerTextStyle: {
+    fontSize: 32,
+    color: '#007AFF'
   }
 }
 
