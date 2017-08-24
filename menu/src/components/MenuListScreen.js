@@ -5,7 +5,7 @@ class MenuListScreen extends Component {
   static navigationOptions = ({navigation, screenProps}) => ({
     title: '菜单',
     headerRight: (
-      <TouchableOpacity style={styles.headerButtonStyle}>
+      <TouchableOpacity onPress={() => navigation.navigate('Food')} style={styles.headerButtonStyle}>
         <Text style={[styles.headerTextStyle, {color: screenProps.tintColor}]}>
           +
         </Text>
