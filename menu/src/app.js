@@ -11,7 +11,8 @@ var wilddog = require('wilddog');
 class App extends Component {
   componentWillMount() {
     wilddog.initializeApp({
-      authDomain: "wd1607116684hnxnbz.wilddog.com"
+      authDomain: "wd1607116684hnxnbz.wilddog.com",
+      syncURL: "https://wd1607116684hnxnbz.wilddogio.com"
     });
   }
 
