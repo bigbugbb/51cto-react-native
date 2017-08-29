@@ -34,7 +34,11 @@ class AuthScreen extends Component {
 
   renderButton() {
     if (this.props.auth.authenticating) {
-      return <ActivityIndicator size='small' />;
+      return (
+        <View style={{flex: 1}}>
+          <ActivityIndicator size='small' />
+        </View>
+      );
     }
     return <Button onPress={this.onButtonPress.bind(this)}>登陆</Button>;
   }
@@ -65,9 +69,7 @@ class AuthScreen extends Component {
         {this.renderErrorMessage(error)}
 
         <CardSection>
-          <View style={{flex: 1}}>
-            {this.renderButton()}
-          </View>
+          {this.renderButton()}
         </CardSection>
       </Card>
     );
