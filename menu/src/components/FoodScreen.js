@@ -77,6 +77,7 @@ class FoodScreen extends Component {
 
   renderDeleteButton() {
     const { selectedItem } = this.props;
+
     if (selectedItem && selectedItem.key) {
       return (
         <CardSection>
@@ -88,6 +89,7 @@ class FoodScreen extends Component {
 
   render() {
     const { name, imageUrl, price } = this.props.food;
+
     return (
       <Card>
         <CardSection>
