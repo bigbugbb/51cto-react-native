@@ -55,6 +55,7 @@ class MenuListScreen extends Component {
           dataSource={this.dataSource()}
           renderRow={this.renderRow.bind(this)}
           renderFooter={this.renderFooter}
+          enableEmptySections
         />
       );
     }

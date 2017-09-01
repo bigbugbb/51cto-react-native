@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import { Input, Card, CardSection, Button } from './common';
+import { Input, Card, CardSection, Button, Confirm } from './common';
 import { connect } from 'react-redux';
 import { foodNameChanged, foodPriceChanged, initFood, saveFood, deleteFood } from '../actions';
 
@@ -8,6 +8,8 @@ class FoodScreen extends Component {
   static navigationOptions = {
     title: '菜'
   }
+
+  state = { showDeleteConfirm: false };
 
   componentWillMount() {
     const { selectedItem } = this.props;
@@ -33,11 +35,16 @@ class FoodScreen extends Component {
     );
   }
 
-  onFoodDelete() {
+  onFoodDeleteConfirmed() {
     const { selectedItem, navigation } = this.props;
     if (selectedItem.key) {
       this.props.deleteFood(selectedItem.key, navigation);
     }
+    this.setState({ showDeleteConfirm: false });
+  }
+
+  onFoodDeleteCanceled() {
+    this.setState({ showDeleteConfirm: false });
   }
 
   renderDeleteButton() {
@@ -45,7 +52,7 @@ class FoodScreen extends Component {
     if (selectedItem.key) {
       return (
         <CardSection>
-          <Button onPress={this.onFoodDelete.bind(this)}>删除</Button>
+          <Button onPress={() => this.setState({ showDeleteConfirm: true })}>删除</Button>
         </CardSection>
       );
     }
@@ -79,6 +86,14 @@ class FoodScreen extends Component {
         </CardSection>
 
         {this.renderDeleteButton()}
+
+        <Confirm
+          visible={this.state.showDeleteConfirm}
+          onAccept={this.onFoodDeleteConfirmed.bind(this)}
+          onCancel={this.onFoodDeleteCanceled.bind(this)}
+        >
+          您真的要删除这道菜吗？
+        </Confirm>
       </Card>
     )
   }
