@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image, TouchableHighlight, Dimensions } from 'react-native';
 import { Input, Card, CardSection, Button, Confirm } from './common';
 import { connect } from 'react-redux';
 import { foodNameChanged, foodPriceChanged, initFood, saveFood, deleteFood } from '../actions';
+
+const { width } = Dimensions.get('window');
 
 class FoodScreen extends Component {
   static navigationOptions = {
@@ -16,6 +18,13 @@ class FoodScreen extends Component {
     if (selectedItem) {
       this.props.initFood(selectedItem.food);
     }
+  }
+
+  getImageSource(imageUrl) {
+    if (imageUrl) {
+      return { uri: imageUrl };
+    }
+    return require('../../img/image-placeholder.jpg');
   }
 
   onNameChanged(text) {
@@ -49,7 +58,7 @@ class FoodScreen extends Component {
 
   renderDeleteButton() {
     const { selectedItem } = this.props;
-    if (selectedItem.key) {
+    if (selectedItem && selectedItem.key) {
       return (
         <CardSection>
           <Button onPress={() => this.setState({ showDeleteConfirm: true })}>删除</Button>
@@ -59,7 +68,7 @@ class FoodScreen extends Component {
   }
 
   render() {
-    const { name, price } = this.props.food;
+    const { name, imageUrl, price } = this.props.food;
     return (
       <Card>
         <CardSection>
@@ -69,6 +78,16 @@ class FoodScreen extends Component {
             value={name}
             onChangeText={this.onNameChanged.bind(this)}
           />
+        </CardSection>
+
+        <CardSection>
+          <Text style={{ flex: 1, fontSize: 16 }}>图片</Text>
+          <TouchableHighlight style={{ flex: 2 }}>
+            <Image
+              source={this.getImageSource(imageUrl)}
+              style={{ width: width * 0.5, height: width * 0.5 }}
+            />
+          </TouchableHighlight>
         </CardSection>
 
         <CardSection>
