@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App中要使用CameraRoll去获取本地相册信息</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -42,9 +46,8 @@
 	<string></string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<!--Include to allow all connections (DANGER)-->
 		<key>NSAllowsArbitraryLoads</key>
-				<true/>
+		<true/>
 	</dict>
 </dict>
 </plist>

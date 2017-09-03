@@ -1,7 +1,7 @@
 import { AppNavigator } from '../navigators/AppNavigator';
 
 const INITIAL_STATE = AppNavigator.router.getStateForAction(
-  AppNavigator.router.getActionForPathAndParams('Auth')
+  AppNavigator.router.getActionForPathAndParams('Food')
 );
 
 export default (state = INITIAL_STATE, action) => {

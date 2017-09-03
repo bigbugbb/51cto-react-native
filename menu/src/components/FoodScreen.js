@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableHighlight, Dimensions } from 'react-native';
+import { View, Text, Image, TouchableHighlight, Dimensions, CameraRoll } from 'react-native';
 import { Input, Card, CardSection, Button, Confirm } from './common';
 import { connect } from 'react-redux';
 import { foodNameChanged, foodPriceChanged, initFood, saveFood, deleteFood } from '../actions';
+import ImagePicker from './ImagePicker';
 
 const { width } = Dimensions.get('window');
 
@@ -11,13 +12,20 @@ class FoodScreen extends Component {
     title: '菜'
   }
 
-  state = { showDeleteConfirm: false };
+  state = { showDeleteConfirm: false, showImagePicker: false, images: [] };
 
   componentWillMount() {
     const { selectedItem } = this.props;
+
     if (selectedItem) {
       this.props.initFood(selectedItem.food);
     }
+
+    CameraRoll.getPhotos({ first: 30, assetType: 'All' })
+      .then((result) => {
+        console.log(result.edges);
+        this.setState({ images: result.edges })
+      });
   }
 
   getImageSource(imageUrl) {
@@ -105,6 +113,11 @@ class FoodScreen extends Component {
         </CardSection>
 
         {this.renderDeleteButton()}
+
+        <ImagePicker
+          visible={this.state.showImagePicker}
+          images={this.state.images}
+        />
 
         <Confirm
           visible={this.state.showDeleteConfirm}
