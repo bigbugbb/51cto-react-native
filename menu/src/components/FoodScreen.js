@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import { View, Text, Image, TouchableHighlight, Dimensions, CameraRoll } from 'react-native';
 import { Input, Card, CardSection, Button, Confirm } from './common';
 import { connect } from 'react-redux';
-import { foodNameChanged, foodPriceChanged, initFood, saveFood, deleteFood } from '../actions';
+import {
+  foodNameChanged,
+  foodPriceChanged,
+  foodImageChanged,
+  initFood,
+  saveFood,
+  deleteFood
+} from '../actions';
 import ImagePicker from './ImagePicker';
 
 const { width } = Dimensions.get('window');
@@ -23,7 +30,6 @@ class FoodScreen extends Component {
 
     CameraRoll.getPhotos({ first: 30, assetType: 'All' })
       .then((result) => {
-        console.log(result.edges);
         this.setState({ images: result.edges })
       });
   }
@@ -41,6 +47,11 @@ class FoodScreen extends Component {
 
   onPriceChanged(text) {
     this.props.foodPriceChanged(text);
+  }
+
+  onSelectImage(image) {
+    this.setState({ showImagePicker: false });
+    this.props.foodImageChanged(image.uri);
   }
 
   onFoodSave() {
@@ -90,7 +101,10 @@ class FoodScreen extends Component {
 
         <CardSection>
           <Text style={{ flex: 1, fontSize: 16 }}>图片</Text>
-          <TouchableHighlight style={{ flex: 2 }}>
+          <TouchableHighlight
+            style={{ flex: 2 }}
+            onPress={() => this.setState({ showImagePicker: true })}
+          >
             <Image
               source={this.getImageSource(imageUrl)}
               style={{ width: width * 0.5, height: width * 0.5 }}
@@ -117,6 +131,8 @@ class FoodScreen extends Component {
         <ImagePicker
           visible={this.state.showImagePicker}
           images={this.state.images}
+          onSelectImage={this.onSelectImage.bind(this)}
+          onCancel={() => this.setState({ showImagePicker: false })}
         />
 
         <Confirm
@@ -136,4 +152,12 @@ const mapStateToProps = (state, ownProps) => {
   return { food: state.food, selectedItem: params ? params.selectedItem : null };
 }
 
-export default connect(mapStateToProps, { foodNameChanged, foodPriceChanged, initFood, saveFood, deleteFood })(FoodScreen);
+export default connect(
+  mapStateToProps, {
+    foodNameChanged,
+    foodPriceChanged,
+    initFood,
+    saveFood,
+    deleteFood,
+    foodImageChanged
+  })(FoodScreen);

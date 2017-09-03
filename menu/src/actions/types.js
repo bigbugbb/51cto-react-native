@@ -6,6 +6,7 @@ export const LOGIN_USER_START = 'login_user_start';
 export const FOOD_INIT = 'food_init';
 export const FOOD_NAME_CHANGED = 'food_name_changed';
 export const FOOD_PRICE_CHANGED = 'food_price_changed';
+export const FOOD_IMAGE_CHANGED = 'food_image_changed';
 export const MENU_LIST_UPDATE_START = 'menu_list_update_start';
 export const MENU_LIST_UPDATE_SUCCESS = 'menu_list_update_success';
 export const MENU_LIST_UPDATE_FAIL = 'menu_list_update_fail';

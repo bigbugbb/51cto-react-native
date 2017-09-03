@@ -7,6 +7,7 @@ import {
   FOOD_INIT,
   FOOD_NAME_CHANGED,
   FOOD_PRICE_CHANGED,
+  FOOD_IMAGE_CHANGED,
   MENU_LIST_UPDATE_START,
   MENU_LIST_UPDATE_SUCCESS,
   MENU_LIST_UPDATE_FAIL
@@ -67,6 +68,13 @@ export const foodPriceChanged = (text) => {
   return {
     type: FOOD_PRICE_CHANGED,
     payload: text
+  }
+}
+
+export const foodImageChanged = (imageUrl) => {
+  return {
+    type: FOOD_IMAGE_CHANGED,
+    payload: imageUrl
   }
 }
 
