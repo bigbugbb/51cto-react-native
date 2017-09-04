@@ -6,9 +6,9 @@ import { SignInForm, SignUpForm, SignOutForm } from './forms';
 var wilddog = require('wilddog');
 
 const Mode = {
-  SIGN_IN: Symbol('SIGN_IN'),
-  SIGN_UP: Symbol('SIGN_UP'),
-  SIGN_OUT: Symbol('SIGN_OUT')
+  SIGN_IN: 'SIGN_IN',
+  SIGN_UP: 'SIGN_UP',
+  SIGN_OUT: 'SIGN_OUT'
 }
 
 class App extends Component {
