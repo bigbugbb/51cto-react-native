@@ -42,9 +42,11 @@ app.post('/upload', (req, res) => {
     co(function* () {
       client.useBucket('my-app-test');
       let result = yield client.put(`${OSS_FILE_PREFIX}/${file.name}`, newPath);
+      fs.unlink(newPath);
       res.json(result);
     })
     .catch(function (err) {
+      fs.unlink(newPath);
       res.json(err);
     });
   });
