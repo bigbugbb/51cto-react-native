@@ -137,8 +137,7 @@ export const saveFood = (key, food, navigation) => {
           method: 'POST',
           body,
           headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Accept': 'application/json'
           }
         })
         .then(checkStatus)
@@ -171,16 +170,16 @@ export const deleteFood = (key, food, navigation) => {
       dispatch({ type: MENU_LIST_UPDATE_FAIL, payload: error });
     });
 
-    // food.imageUrl: '', 'asset....', 'http://.....'
+    // food.imageUrl: '', 'asset....', 'http....'
     if (food.imageUrl) {
       let protocol = food.imageUrl.split("://")[0];
 
       if (protocol === 'http') {
         // build the oss object key
-        let name = food.imageUrl.split(/[/]+/).pop();
+        let filename = food.imageUrl.split(/[/]+/).pop();
 
         // use fetch api to upload image
-        fetch(FILE_DELETE_URL + `/${name}`, {
+        fetch(FILE_DELETE_URL + `/${filename}`, {
           method: 'DELETE',
           headers: { 'Accept': 'application/json' }
         })

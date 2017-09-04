@@ -8,12 +8,12 @@ var OSS = require('ali-oss');
 
 var client = new OSS({
   region: 'oss-cn-hangzhou',
-  accessKeyId: 'LTAIt25c6IspTk8Q',
-  accessKeySecret: '8uvDmcknFJb2ArQN73ydixO2RjXXAC',
-  bucket: 'my-app-test'
+  accessKeyId: 'LTAIVaqXh18vRfwl',
+  accessKeySecret: '4zhdEOUlH4NkhTv3urZlxlrq3ZMh70',
+  bucket: 'menu-app-data'
 });
 
-const OSS_FILE_PREFIX = '/images';
+const OSS_FILE_PREFIX = 'images';
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -29,7 +29,7 @@ app.post('/upload', (req, res) => {
   // specify that we want to allow the user to upload multiple files in a single request
   form.multiples = true;
 
-  // store all uploads in the /uploads directory
+  // store all uploads in the /tmp directory
   form.uploadDir = '/tmp';
 
   // every time a file has been uploaded successfully,
@@ -40,7 +40,6 @@ app.post('/upload', (req, res) => {
     fs.rename(file.path, newPath);
 
     co(function* () {
-      client.useBucket('my-app-test');
       let result = yield client.put(`${OSS_FILE_PREFIX}/${file.name}`, newPath);
       res.json(result);
     })
@@ -56,15 +55,15 @@ app.post('/upload', (req, res) => {
 
   // parse the incoming request containing the form data
   form.parse(req);
-
 });
 
-app.delete('/delete/:name', (req, res) => {
+app.delete('/delete/:filename', (req, res) => {
   co(function* () {
-    let name = req.params.name;
-    let result = yield client.delete(`${OSS_FILE_PREFIX}/${name}`);
+    let filename = req.params.filename;
+    let result = yield client.delete(`${OSS_FILE_PREFIX}/${filename}`);
     res.json(result);
-  }).catch(function (err) {
+  })
+  .catch(function (err) {
     res.json(err);
   });
 });
