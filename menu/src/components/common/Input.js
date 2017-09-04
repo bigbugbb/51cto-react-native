@@ -14,7 +14,8 @@ const Input = ({ label, value, placeholder, onChangeText, keyboardType, secureTe
         keyboardType={keyboardType}
         autoCapitalize="none"
         secureTextEntry={secureTextEntry}
-        autoCorrect={false} />
+        autoCorrect={false}
+        underlineColorAndroid='transparent' />
     </View>
   )
 }
@@ -31,7 +32,8 @@ const styles = {
   textInputStype: {
     fontSize: 16,
     flex: 2,
-    height: 20
+    height: 20,
+    padding: 0
   }
 }
 
