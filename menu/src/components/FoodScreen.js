@@ -50,6 +50,18 @@ class FoodScreen extends Component {
   }
 
   onSelectImage(image) {
+    const file = {
+      uri: image.uri,
+      name: 'image.jpg',
+      type: 'image/jpg'
+    }
+    
+    const body = new FormData()
+    body.append('file', file)
+    
+    url = 'http://localhost:3000/upload'
+    fetch(url, { method: 'POST', body })    
+
     this.setState({ showImagePicker: false });
     this.props.foodImageChanged(image.uri);
   }
