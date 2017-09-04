@@ -3,6 +3,8 @@ var app = express();
 var path = require('path');
 var formidable = require('formidable');
 var fs = require('fs');
+var co = require('co');
+var OSS = require('ali-oss');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -24,17 +26,31 @@ app.post('/upload', function(req, res){
   // every time a file has been uploaded successfully,
   // rename it to it's orignal name
   form.on('file', function(field, file) {
-    fs.rename(file.path, path.join(form.uploadDir, file.name));
+    let newPath = path.join(form.uploadDir, file.name);
+    console.log(newPath);
+
+    fs.rename(file.path, newPath);
+
+    co(function* () {
+      var client = new OSS({
+        region: 'oss-cn-hangzhou',
+        accessKeyId: 'LTAIt25c6IspTk8Q',
+        accessKeySecret: '8uvDmcknFJb2ArQN73ydixO2RjXXAC'
+      });
+
+      client.useBucket('my-app-test');
+      var result = yield client.put(`/images/${file.name}`, newPath);
+      console.log(result);
+
+      res.end(result);
+    }).catch(function (err) {
+      console.log(err);
+    });
   });
 
   // log any errors that occur
   form.on('error', function(err) {
     console.log('An error has occured: \n' + err);
-  });
-
-  // once all the files have been uploaded, send a response to the client
-  form.on('end', function() {
-    res.end('success');
   });
 
   // parse the incoming request containing the form data
