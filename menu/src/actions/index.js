@@ -12,8 +12,10 @@ import {
   MENU_LIST_UPDATE_SUCCESS,
   MENU_LIST_UPDATE_FAIL
 } from './types';
+import { FILE_UPLOAD_URL } from '../config';
 
 var wilddog = require('wilddog');
+const uuidv4 = require('uuid/v4');
 
 export const emailChanged = (text) => {
   return {
@@ -85,6 +87,25 @@ export const initFood = (food) => {
   }
 }
 
+const updateMenuList = (refToMenuList, key, food) => {
+  // update wilddog data with sync
+  if (key) {
+    refToMenuList.child(key).update(food);
+  } else {
+    refToMenuList.push(food);
+  }
+}
+
+const checkStatus = (response) => {
+  if (response.status >= 200 && response.status < 300) {
+    return response;
+  } else {
+    var error = new Error(response.statusText);
+    error.response = response;
+    throw error;
+  }
+}
+
 export const saveFood = (key, food, navigation) => {
   let userId = wilddog.auth().currentUser.uid;
   let refToMenuList = wilddog.sync().ref(`/users/${userId}/menu_list`);
@@ -97,10 +118,43 @@ export const saveFood = (key, food, navigation) => {
       dispatch({ type: MENU_LIST_UPDATE_FAIL, payload: error });
     });
 
-    if (key) {
-      refToMenuList.child(key).update(food);
+    // food.imageUrl: '', 'asset....', 'http://.....'
+    if (food.imageUrl) {
+      let protocol = food.imageUrl.split("://")[0];
+
+      if (protocol !== 'http') {
+        // build the body with local image url
+        const file = {
+          uri: food.imageUrl,
+          name: `${userId}:${uuidv4()}.jpg`,
+          type: 'image/jpg'
+        }
+        const body = new FormData()
+        body.append('file', file)
+
+        // use fetch api to upload image
+        fetch(FILE_UPLOAD_URL, {
+          method: 'POST',
+          body,
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(checkStatus)
+        .then(response => response.json())
+        .then(responseJson => {
+          food.imageUrl = responseJson.url;
+          updateMenuList(refToMenuList, key, food);
+        })
+        .catch(error => console.log(error));
+      } else {
+        // image is on the cloud
+        updateMenuList(refToMenuList, key, food);
+      }
     } else {
-      refToMenuList.push(food);
+      // there is no image selected
+      updateMenuList(refToMenuList, key, food);
     }
   }
 }

@@ -31,6 +31,8 @@ app.post('/upload', function(req, res){
 
     fs.rename(file.path, newPath);
 
+    var result = {};
+
     co(function* () {
       var client = new OSS({
         region: 'oss-cn-hangzhou',
@@ -39,12 +41,11 @@ app.post('/upload', function(req, res){
       });
 
       client.useBucket('my-app-test');
-      var result = yield client.put(`/images/${file.name}`, newPath);
-      console.log(result);
-
-      res.end(result);
+      result = yield client.put(`/images/${file.name}`, newPath);
+      res.json(result);
     }).catch(function (err) {
-      console.log(err);
+      result = err;
+      res.json(err);
     });
   });
 
