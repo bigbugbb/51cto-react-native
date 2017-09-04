@@ -30,7 +30,7 @@ app.post('/upload', (req, res) => {
   form.multiples = true;
 
   // store all uploads in the /uploads directory
-  form.uploadDir = path.join(__dirname, '/uploads');
+  form.uploadDir = '/tmp';
 
   // every time a file has been uploaded successfully,
   // rename it to it's orignal name
@@ -42,11 +42,9 @@ app.post('/upload', (req, res) => {
     co(function* () {
       client.useBucket('my-app-test');
       let result = yield client.put(`${OSS_FILE_PREFIX}/${file.name}`, newPath);
-      fs.unlink(newPath);
       res.json(result);
     })
     .catch(function (err) {
-      fs.unlink(newPath);
       res.json(err);
     });
   });
