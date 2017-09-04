@@ -64,9 +64,9 @@ class FoodScreen extends Component {
   }
 
   onFoodDeleteConfirmed() {
-    const { selectedItem, navigation } = this.props;
+    const { food, selectedItem, navigation } = this.props;
     if (selectedItem.key) {
-      this.props.deleteFood(selectedItem.key, navigation);
+      this.props.deleteFood(selectedItem.key, food, navigation);
     }
     this.setState({ showDeleteConfirm: false });
   }

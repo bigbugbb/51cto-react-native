@@ -12,7 +12,7 @@ import {
   MENU_LIST_UPDATE_SUCCESS,
   MENU_LIST_UPDATE_FAIL
 } from './types';
-import { FILE_UPLOAD_URL } from '../config';
+import { FILE_UPLOAD_URL, FILE_DELETE_URL } from '../config';
 
 var wilddog = require('wilddog');
 const uuidv4 = require('uuid/v4');
@@ -159,7 +159,7 @@ export const saveFood = (key, food, navigation) => {
   }
 }
 
-export const deleteFood = (key, navigation) => {
+export const deleteFood = (key, food, navigation) => {
   let userId = wilddog.auth().currentUser.uid;
   let refToMenuList = wilddog.sync().ref(`/users/${userId}/menu_list`);
 
@@ -171,8 +171,35 @@ export const deleteFood = (key, navigation) => {
       dispatch({ type: MENU_LIST_UPDATE_FAIL, payload: error });
     });
 
-    if (key) {
-      refToMenuList.child(key).remove();
+    // food.imageUrl: '', 'asset....', 'http://.....'
+    if (food.imageUrl) {
+      let protocol = food.imageUrl.split("://")[0];
+
+      if (protocol === 'http') {
+        // build the oss object key
+        let name = food.imageUrl.split(/[/]+/).pop();
+
+        // use fetch api to upload image
+        fetch(FILE_DELETE_URL + `/${name}`, {
+          method: 'DELETE',
+          headers: { 'Accept': 'application/json' }
+        })
+        .then(checkStatus)
+        .then(response => {
+          if (key) {
+            refToMenuList.child(key).remove();
+          }
+        })
+        .catch(error => console.log(error));
+      } else {
+        if (key) {
+          refToMenuList.child(key).remove();
+        }
+      }
+    } else {
+      if (key) {
+        refToMenuList.child(key).remove();
+      }
     }
   }
 }
