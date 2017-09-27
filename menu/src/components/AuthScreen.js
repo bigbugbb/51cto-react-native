@@ -6,7 +6,10 @@ import { emailChanged, passwordChanged, loginUser } from '../actions';
 
 class AuthScreen extends Component {
   static navigationOptions = {
-    title: '用户认证'
+    title: '用户认证',
+    headerTitleStyle: {
+      alignSelf: 'center'
+    }
   };
 
   onEmailChanged(text) {
