@@ -16,7 +16,11 @@ const { width } = Dimensions.get('window');
 
 class FoodScreen extends Component {
   static navigationOptions = {
-    title: '菜'
+    title: '菜',
+    headerTitleStyle: {
+      alignSelf: 'center'
+    },
+    headerRight: <View />
   }
 
   state = { showDeleteConfirm: false, showImagePicker: false, images: [] };
