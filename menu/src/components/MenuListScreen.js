@@ -13,6 +13,9 @@ const EMPTY_FOOD = {
 class MenuListScreen extends Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
     title: '菜单',
+    headerTitleStyle: {
+      alignSelf: 'center'
+    },
     headerRight: (
       <TouchableOpacity 
         onPress={() => navigation.navigate('Food', { selectedItem: { food: EMPTY_FOOD } })} 

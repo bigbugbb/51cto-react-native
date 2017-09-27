@@ -6,7 +6,11 @@ import { foodNameChanged, foodPriceChanged, initFood, saveFood, deleteFood } fro
 
 class FoodScreen extends Component {
   static navigationOptions = {
-    title: '菜'
+    title: '菜',
+    headerTitleStyle: {
+      alignSelf: 'center'
+    },
+    headerRight: <View />
   }
 
   componentWillMount() {
